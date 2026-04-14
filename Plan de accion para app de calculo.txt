@@ -1,0 +1,60 @@
+Rol: Actúa como un Senior Software Architect y experto en React Native (Expo). Vamos a construir una aplicación de finanzas personales para conductores en Argentina llamada "Costo Auto AR".
+
+Objetivo Técnico: Crear un MVP robusto, escalable y con persistencia local que permita a los usuarios calcular el costo real de uso de su vehículo en un contexto de alta inflación.
+
+1. Stack Tecnológico & Arquitectura:
+
+Framework: React Native con Expo (Managed Workflow).
+
+Persistencia Local: expo-sqlite. Instrucción: Implementá un Repository Pattern para separar la lógica de la base de datos de los componentes de la UI. Esto es clave para que en el futuro podamos migrar a una base de datos online (Supabase/Firebase) sin rehacer la app.
+
+Estado: Usa Hooks de React (useState, useEffect, useMemo).
+
+2. Esquema de Base de Datos (SQLite):
+Crea una tabla llamada settings con la siguiente estructura:
+
+id (INTEGER PRIMARY KEY)
+
+fuel_price (REAL) - Precio por litro/m3.
+
+consumption_100km (REAL) - Litros/m3 cada 100km.
+
+monthly_km (INTEGER) - Kilómetros promedio al mes.
+
+insurance (REAL) - Costo mensual del seguro.
+
+tax (REAL) - Costo de patente (mensualizado).
+
+3. Lógica de Negocio & Sincronización:
+
+Carga Inicial: Al iniciar por primera vez (si la tabla está vacía), debés realizar un fetch (usá una URL de mock por ahora) para obtener el precio oficial de la Nafta Súper en Argentina, guardarlo y mostrarlo.
+
+Soberanía del Usuario: Si el usuario edita el precio manualmente, ese valor "mandado" por el usuario debe persistir y NO ser sobreescrito por la API automáticamente.
+
+Botón Refresh (🔄): Agregá un botón junto al input de combustible que, al tocarlo, consulte de nuevo la API y actualice el valor local.
+
+4. Diseño de Componentes (UI/UX):
+
+Smart Inputs: Creá un componente de input reutilizable.
+
+Consumo: Debe tener un placeholder="8.5" (grisáceo). No debe haber un valor fijo precargado que el usuario tenga que borrar; si escribe, el placeholder desaparece.
+
+Visual: El sufijo (ej: "L/100km" o "$/L") debe estar visible a la derecha del campo pero no debe ser parte del valor editable.
+
+Auto-Save: Cada vez que un input pierda el foco (onBlur), guardá el valor automáticamente en SQLite.
+
+Dashboard de Resultados: Mostrá en tiempo real (usando useMemo para los cálculos):
+
+Costo por Kilómetro: (consumo / 100) * precio_nafta.
+
+Gasto Total Mensual: (costo_km * km_mensuales) + seguro + patente.
+
+5. Consejos de Implementación:
+
+Mantené el código limpio y separado en carpetas: /src/components, /src/database, /src/hooks.
+
+Asegurate de que los teclados para los inputs sean puramente numéricos (keyboardType="numeric").
+
+Usá StyleSheet para un diseño limpio y moderno con estética "Fintech".
+
+¡Empecemos! Generá la estructura de carpetas y el archivo de configuración de la base de datos primero.
